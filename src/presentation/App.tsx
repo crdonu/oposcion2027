@@ -21,7 +21,7 @@ export function App({ auth, repository, cloud }: { auth: AuthService; repository
   if (logged === null) return <div className="loading">Cargando…</div>;
 
   if (!logged) {
-    return <LoginPage onLogin={async (pw) => { const ok = await auth.login(pw); if (ok) setLogged(true); return ok; }} />;
+    return <LoginPage needsEmail={auth.needsEmail} onLogin={async (c) => { const ok = await auth.login(c); if (ok) setLogged(true); return ok; }} />;
   }
 
   return (

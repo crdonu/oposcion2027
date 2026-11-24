@@ -1,6 +1,6 @@
 // Acceso solo con contraseña, sin servidor (modo local). Es una barrera de
 // entrada, no una protección fuerte: se usa cuando Firebase no está configurado.
-import type { AuthService } from '../application/ports';
+import type { AuthService, Credentials } from '../application/ports';
 
 async function sha256Hex(text: string): Promise<string> {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -8,6 +8,7 @@ async function sha256Hex(text: string): Promise<string> {
 }
 
 export class PasswordAuth implements AuthService {
+  readonly needsEmail = false;
   private readonly expectedHash: string;
   private readonly sessionKey: string;
 
@@ -24,7 +25,7 @@ export class PasswordAuth implements AuthService {
     }
   }
 
-  async login(password: string): Promise<boolean> {
+  async login({ password }: Credentials): Promise<boolean> {
     const ok = (await sha256Hex(password)) === this.expectedHash;
     if (ok) {
       try {

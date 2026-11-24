@@ -1,15 +1,14 @@
-// Acceso con Firebase Authentication. La usuaria solo escribe la contraseña:
-// el correo de su cuenta está en la configuración.
+// Acceso con Firebase Authentication: correo y contraseña de la cuenta.
+// No hay ningún dato de la cuenta en el código.
 import { browserLocalPersistence, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut, type Auth } from 'firebase/auth';
-import type { AuthService } from '../../application/ports';
+import type { AuthService, Credentials } from '../../application/ports';
 
 export class FirebaseAuth implements AuthService {
+  readonly needsEmail = true;
   private readonly auth: Auth;
-  private readonly email: string;
 
-  constructor(auth: Auth, email: string) {
+  constructor(auth: Auth) {
     this.auth = auth;
-    this.email = email;
   }
 
   init(): Promise<boolean> {
@@ -21,10 +20,10 @@ export class FirebaseAuth implements AuthService {
     });
   }
 
-  async login(password: string): Promise<boolean> {
+  async login({ email, password }: Credentials): Promise<boolean> {
     try {
       await setPersistence(this.auth, browserLocalPersistence);
-      await signInWithEmailAndPassword(this.auth, this.email, password);
+      await signInWithEmailAndPassword(this.auth, email.trim(), password);
       return true;
     } catch {
       return false;

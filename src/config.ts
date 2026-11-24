@@ -16,9 +16,6 @@ export const FIREBASE_CONFIG: FirebaseOptions | null = {
   appId: '1:29155558616:web:967d5c8756000cd63443ad',
 };
 
-/** Correo de la cuenta creada en Firebase Authentication (la usuaria solo escribe la contraseña). */
-export const FIREBASE_EMAIL = 'oposicion@mi-app.local';
-
 /**
  * Solo en modo local: huella SHA-256 de la contraseña provisional "oposicion2027".
  *   node -e "console.log(require('crypto').createHash('sha256').update('NUEVA').digest('hex'))"

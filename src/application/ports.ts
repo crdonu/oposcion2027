@@ -12,10 +12,17 @@ export interface DataRepository {
   subscribe?(onRemoteChange: (data: AppData) => void): () => void;
 }
 
+export interface Credentials {
+  email: string;
+  password: string;
+}
+
 /** Control de acceso a la aplicación. */
 export interface AuthService {
+  /** Si el acceso pide correo además de contraseña. */
+  readonly needsEmail: boolean;
   /** Comprueba si ya hay una sesión abierta (puede ser asíncrono). */
   init(): Promise<boolean>;
-  login(password: string): Promise<boolean>;
+  login(credentials: Credentials): Promise<boolean>;
   logout(): Promise<void>;
 }

@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useSyncExternalStore } from 'react';
+import { pwa } from '../../infrastructure/pwa';
 import * as uc from '../../application/useCases';
 import { useStore } from '../state/AppStore';
 import { Icon } from '../components/Icons';
@@ -8,6 +9,7 @@ export function AjustesPage({ onLogout, cloud }: { onLogout: () => void; cloud: 
   const { data, run, replaceAll } = useStore();
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState('');
+  const canInstall = useSyncExternalStore(pwa.subscribe, pwa.canInstall);
 
   const exportar = () => {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -34,6 +36,16 @@ export function AjustesPage({ onLogout, cloud }: { onLogout: () => void; cloud: 
       <section className="settings-block">
         <h2>Apariencia</h2>
         <Segmented value={data.ajustes.tema} options={[['claro', 'Claro'], ['oscuro', 'Oscuro']]} onChange={(tema) => run((d) => uc.editarAjustes(d, { tema }))} />
+      </section>
+      <section className="settings-block">
+        <h2>Instalar en este aparato</h2>
+        {pwa.isInstalled() ? (
+          <p className="small muted">Ya la estás usando como aplicación instalada.</p>
+        ) : canInstall ? (
+          <span><button className="btn primary" onClick={() => void pwa.install()}>Instalar aplicación</button></span>
+        ) : (
+          <p className="small muted">En Android: menú ⋮ de Chrome → «Instalar aplicación» o «Añadir a pantalla de inicio». En iPhone: botón Compartir de Safari → «Añadir a pantalla de inicio».</p>
+        )}
       </section>
       <section className="settings-block">
         <h2>Fechas de la planificación</h2>

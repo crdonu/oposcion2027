@@ -6,7 +6,10 @@ import { App } from './presentation/App';
 import { LocalStorageRepository } from './infrastructure/LocalStorageRepository';
 import { PasswordAuth } from './infrastructure/PasswordAuth';
 import { FIREBASE_CONFIG, PASSWORD_SHA256, SESSION_KEY, STORAGE_KEY } from './config';
+import { setupPwa } from './infrastructure/pwa';
 import './presentation/styles.css';
+
+setupPwa();
 
 async function compose(): Promise<{ auth: AuthService; repository: DataRepository; cloud: boolean }> {
   const local = new LocalStorageRepository(STORAGE_KEY);

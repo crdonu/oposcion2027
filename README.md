@@ -27,3 +27,16 @@ Las dependencias van siempre hacia dentro: `presentation → application → dom
 ## Publicación
 
 Cada push a `main` publica la web con GitHub Actions (`.github/workflows/deploy.yml`). En el repositorio: Settings → Pages → Source: **GitHub Actions**.
+
+## Base de datos (Firebase)
+
+Sin configurar, la app funciona en modo local (datos en el navegador). Para sincronizar entre aparatos:
+
+1. En <https://console.firebase.google.com> crea un proyecto (sin Google Analytics).
+2. **Authentication → Comenzar → Correo electrónico/contraseña**: actívalo. En **Usuarios → Agregar usuario**, crea la cuenta (puede ser un correo inventado, p. ej. `oposicion@mi-app.local`) con la contraseña de acceso.
+3. **Firestore Database → Crear base de datos** (ubicación `eur3` u otra europea, modo producción). En **Reglas**, pega el contenido de `firestore.rules` y publica.
+4. **Configuración del proyecto → Tus apps → Web (`</>`)**: registra la app y copia el objeto `firebaseConfig`.
+5. **Authentication → Configuración → Dominios autorizados**: añade `TU-USUARIO.github.io`.
+6. Pega `firebaseConfig` en `FIREBASE_CONFIG` y el correo en `FIREBASE_EMAIL` (`src/config.ts`).
+
+La primera vez que entres con Firebase, lo que tuvieras guardado en ese navegador se sube a la nube.

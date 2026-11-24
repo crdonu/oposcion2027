@@ -4,7 +4,7 @@ import { useStore } from '../state/AppStore';
 import { Icon } from '../components/Icons';
 import { PageHeader, Segmented } from '../components/ui';
 
-export function AjustesPage({ onLogout }: { onLogout: () => void }) {
+export function AjustesPage({ onLogout, cloud }: { onLogout: () => void; cloud: boolean }) {
   const { data, run, replaceAll } = useStore();
   const fileRef = useRef<HTMLInputElement>(null);
   const [msg, setMsg] = useState('');
@@ -55,6 +55,8 @@ export function AjustesPage({ onLogout }: { onLogout: () => void }) {
         {msg && <p className="small">{msg}</p>}
       </section>
       <section className="settings-block">
+        <h2>Sesión</h2>
+        <p className="small muted">{cloud ? 'Tus datos se guardan en la nube y se sincronizan entre el ordenador y el móvil.' : 'Modo local: los datos se guardan solo en este navegador.'}</p>
         <button className="btn" onClick={onLogout}><Icon name="logout" size={16} />Cerrar sesión</button>
       </section>
     </div>

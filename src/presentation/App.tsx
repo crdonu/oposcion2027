@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import type { AuthService, DataRepository } from '../application/ports';
 import { AppStoreProvider } from './state/AppStore';
@@ -11,8 +11,14 @@ import { RequisitosPage } from './pages/RequisitosPage';
 import { ConvocatoriaPage } from './pages/ConvocatoriaPage';
 import { AjustesPage } from './pages/AjustesPage';
 
-export function App({ auth, repository }: { auth: AuthService; repository: DataRepository }) {
-  const [logged, setLogged] = useState(() => auth.isAuthenticated());
+export function App({ auth, repository, cloud }: { auth: AuthService; repository: DataRepository; cloud: boolean }) {
+  const [logged, setLogged] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    auth.init().then(setLogged);
+  }, [auth]);
+
+  if (logged === null) return <div className="loading">Cargando…</div>;
 
   if (!logged) {
     return <LoginPage onLogin={async (pw) => { const ok = await auth.login(pw); if (ok) setLogged(true); return ok; }} />;
@@ -29,7 +35,7 @@ export function App({ auth, repository }: { auth: AuthService; repository: DataR
             <Route path="/programacion" element={<ProgramacionPage />} />
             <Route path="/programacion/requisitos" element={<RequisitosPage />} />
             <Route path="/convocatoria" element={<ConvocatoriaPage />} />
-            <Route path="/ajustes" element={<AjustesPage onLogout={() => { auth.logout(); setLogged(false); }} />} />
+            <Route path="/ajustes" element={<AjustesPage cloud={cloud} onLogout={async () => { await auth.logout(); setLogged(false); }} />} />
             <Route path="*" element={<Navigate to="/planificacion" replace />} />
           </Routes>
         </Layout>

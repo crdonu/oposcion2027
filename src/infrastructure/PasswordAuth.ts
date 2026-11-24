@@ -1,5 +1,5 @@
-// Acceso con contraseña. Al ser una web estática (GitHub Pages), esto es una
-// barrera de entrada, no una protección fuerte de los datos.
+// Acceso solo con contraseña, sin servidor (modo local). Es una barrera de
+// entrada, no una protección fuerte: se usa cuando Firebase no está configurado.
 import type { AuthService } from '../application/ports';
 
 async function sha256Hex(text: string): Promise<string> {
@@ -16,7 +16,7 @@ export class PasswordAuth implements AuthService {
     this.sessionKey = sessionKey;
   }
 
-  isAuthenticated(): boolean {
+  async init(): Promise<boolean> {
     try {
       return localStorage.getItem(this.sessionKey) === this.expectedHash;
     } catch {
@@ -36,7 +36,7 @@ export class PasswordAuth implements AuthService {
     return ok;
   }
 
-  logout(): void {
+  async logout(): Promise<void> {
     try {
       localStorage.removeItem(this.sessionKey);
     } catch {

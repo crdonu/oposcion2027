@@ -1,8 +1,19 @@
 // Configuración de la aplicación.
+import type { FirebaseOptions } from 'firebase/app';
 
 /**
- * Huella SHA-256 de la contraseña de acceso (no la contraseña en claro).
- * Contraseña provisional: "oposicion2027". Para cambiarla:
+ * Configuración web de Firebase (Consola de Firebase → Configuración del proyecto →
+ * Tus apps → Web). No es secreta: la protección real son las reglas de Firestore
+ * (firestore.rules) y la contraseña de la cuenta.
+ * Mientras esté a null, la aplicación funciona en modo local (datos en el navegador).
+ */
+export const FIREBASE_CONFIG: FirebaseOptions | null = null;
+
+/** Correo de la cuenta creada en Firebase Authentication (la usuaria solo escribe la contraseña). */
+export const FIREBASE_EMAIL = '';
+
+/**
+ * Solo en modo local: huella SHA-256 de la contraseña provisional "oposicion2027".
  *   node -e "console.log(require('crypto').createHash('sha256').update('NUEVA').digest('hex'))"
  */
 export const PASSWORD_SHA256 = '8a9266cadbfd383bcc14df0176d4c6f8520ace0a7141fcc0a02a023b320effc8';

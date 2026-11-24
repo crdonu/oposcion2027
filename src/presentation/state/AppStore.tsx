@@ -17,6 +17,7 @@ const StoreContext = createContext<Store | null>(null);
 export function AppStoreProvider({ repository, children }: { repository: DataRepository; children: ReactNode }) {
   const [data, setData] = useState<AppData | null>(null);
   const loaded = useRef(false);
+  const skipSave = useRef(false);
 
   useEffect(() => {
     let alive = true;
@@ -30,8 +31,22 @@ export function AppStoreProvider({ repository, children }: { repository: DataRep
     };
   }, [repository]);
 
+  // Cambios hechos en otro aparato (solo con base de datos en la nube).
   useEffect(() => {
-    if (data && loaded.current) void repository.save(data);
+    if (!data || !repository.subscribe) return;
+    const stop = repository.subscribe((remote) => {
+      skipSave.current = true;
+      setData(remote);
+    });
+    return stop;
+    // Se suscribe una vez cargados los datos.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [repository, data === null]);
+
+  useEffect(() => {
+    if (!data || !loaded.current) return;
+    if (skipSave.current) { skipSave.current = false; return; }
+    void repository.save(data);
   }, [data, repository]);
 
   useEffect(() => {

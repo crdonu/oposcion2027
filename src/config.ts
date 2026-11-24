@@ -7,10 +7,17 @@ import type { FirebaseOptions } from 'firebase/app';
  * (firestore.rules) y la contraseña de la cuenta.
  * Mientras esté a null, la aplicación funciona en modo local (datos en el navegador).
  */
-export const FIREBASE_CONFIG: FirebaseOptions | null = null;
+export const FIREBASE_CONFIG: FirebaseOptions | null = {
+  apiKey: 'AIzaSyB3A7fZxfI2rxCmc_vXlmTAOQM6yh261X4',
+  authDomain: 'oposicion-b3133.firebaseapp.com',
+  projectId: 'oposicion-b3133',
+  storageBucket: 'oposicion-b3133.firebasestorage.app',
+  messagingSenderId: '29155558616',
+  appId: '1:29155558616:web:967d5c8756000cd63443ad',
+};
 
 /** Correo de la cuenta creada en Firebase Authentication (la usuaria solo escribe la contraseña). */
-export const FIREBASE_EMAIL = '';
+export const FIREBASE_EMAIL = 'oposicion@mi-app.local';
 
 /**
  * Solo en modo local: huella SHA-256 de la contraseña provisional "oposicion2027".

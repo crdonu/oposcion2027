@@ -30,6 +30,8 @@ export interface Enlace {
   id: string;
   titulo: string;
   url: string;
+  /** true: es un esquema o imagen y se muestra dentro de la página. */
+  mostrar?: boolean;
 }
 
 export interface Nota {
@@ -97,9 +99,20 @@ export interface Ajustes {
 }
 
 /** Agregado raíz: todos los datos de la aplicación. */
+/** Página de la sección Normativa: título, texto libre, esquemas y enlaces. */
+export interface PaginaNormativa {
+  id: string;
+  titulo: string;
+  texto: string; // mismo formato que las notas: **negrita** y "- " viñetas
+  enlaces: Enlace[];
+  orden: number;
+  creada: string; // ISO datetime
+}
+
 export interface AppData {
   version: 1;
   fichas: Ficha[];
+  normativa: PaginaNormativa[];
   tareas: Tarea[];
   requisitos: Requisito[];
   convocatoria: SeccionConvocatoria[];

@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState, ty
 import type { AppData } from '../../domain/entities';
 import type { DataRepository } from '../../application/ports';
 import { crearDatosIniciales } from '../../application/seed';
+import { migrar } from '../../application/useCases';
 
 interface Store {
   data: AppData;
@@ -23,7 +24,7 @@ export function AppStoreProvider({ repository, children }: { repository: DataRep
     let alive = true;
     repository.load().then((d) => {
       if (!alive) return;
-      setData(d ?? crearDatosIniciales());
+      setData(d ? migrar(d) : crearDatosIniciales());
       loaded.current = true;
     });
     return () => {
@@ -36,7 +37,7 @@ export function AppStoreProvider({ repository, children }: { repository: DataRep
     if (!data || !repository.subscribe) return;
     const stop = repository.subscribe((remote) => {
       skipSave.current = true;
-      setData(remote);
+      setData(migrar(remote));
     });
     return stop;
     // Se suscribe una vez cargados los datos.
@@ -57,7 +58,7 @@ export function AppStoreProvider({ repository, children }: { repository: DataRep
     setData((d) => (d ? apply(d) : d));
   }, []);
 
-  const replaceAll = useCallback((d: AppData) => setData(d), []);
+  const replaceAll = useCallback((d: AppData) => setData(migrar(d)), []);
 
   if (!data) return <div className="loading">Cargando…</div>;
   return <StoreContext.Provider value={{ data, run, replaceAll }}>{children}</StoreContext.Provider>;

@@ -1,6 +1,6 @@
 // Casos de uso: transformaciones puras de AppData. No saben nada de React ni del almacenamiento.
 import type {
-  AppData, Ajustes, Enlace, Estado, Ficha, FichaKind, Nota, Paso, Requisito, RequisitoGrupo,
+  AppData, Ajustes, Enlace, Estado, Ficha, FichaKind, Nota, PaginaNormativa, Paso, Requisito, RequisitoGrupo,
   SeccionConvocatoria, Tarea,
 } from '../domain/entities';
 import { newId } from './ids';
@@ -66,9 +66,12 @@ export function borrarPaso(d: AppData, fichaId: string, pasoId: string): AppData
 }
 
 // Enlaces
-export function anadirEnlace(d: AppData, fichaId: string, titulo: string, url: string): AppData {
-  const e: Enlace = { id: newId(), titulo, url };
+export function anadirEnlace(d: AppData, fichaId: string, titulo: string, url: string, mostrar = false): AppData {
+  const e: Enlace = { id: newId(), titulo, url, ...(mostrar ? { mostrar: true } : {}) };
   return mapFicha(d, fichaId, (f) => ({ ...f, enlaces: [...f.enlaces, e] }));
+}
+export function editarEnlace(d: AppData, fichaId: string, enlaceId: string, patch: Patch<Enlace>): AppData {
+  return mapFicha(d, fichaId, (f) => ({ ...f, enlaces: f.enlaces.map((e) => (e.id === enlaceId ? { ...e, ...patch } : e)) }));
 }
 export function borrarEnlace(d: AppData, fichaId: string, enlaceId: string): AppData {
   return mapFicha(d, fichaId, (f) => ({ ...f, enlaces: f.enlaces.filter((e) => e.id !== enlaceId) }));
@@ -87,6 +90,43 @@ export function editarNota(d: AppData, fichaId: string, notaId: string, texto: s
 }
 export function borrarNota(d: AppData, fichaId: string, notaId: string): AppData {
   return mapFicha(d, fichaId, (f) => ({ ...f, notas: f.notas.filter((n) => n.id !== notaId) }));
+}
+
+// ---------- Normativa ----------
+
+const mapPagina = (d: AppData, id: string, fn: (p: PaginaNormativa) => PaginaNormativa): AppData => ({
+  ...d,
+  normativa: d.normativa.map((p) => (p.id === id ? fn(p) : p)),
+});
+
+export function crearPagina(d: AppData, id: string = newId()): AppData {
+  const orden = d.normativa.reduce((m, p) => Math.max(m, p.orden), 0) + 1;
+  const p: PaginaNormativa = { id, titulo: '', texto: '', enlaces: [], orden, creada: new Date().toISOString() };
+  return { ...d, normativa: [...d.normativa, p] };
+}
+export function editarPagina(d: AppData, id: string, patch: Patch<PaginaNormativa>): AppData {
+  return mapPagina(d, id, (p) => ({ ...p, ...patch }));
+}
+export function borrarPagina(d: AppData, id: string): AppData {
+  return { ...d, normativa: d.normativa.filter((p) => p.id !== id) };
+}
+export function moverPagina(d: AppData, id: string, dir: -1 | 1): AppData {
+  const lista = [...d.normativa].sort((a, b) => a.orden - b.orden);
+  const i = lista.findIndex((p) => p.id === id);
+  const j = i + dir;
+  if (i < 0 || j < 0 || j >= lista.length) return d;
+  const a = lista[i], b = lista[j];
+  return { ...d, normativa: d.normativa.map((p) => (p.id === a.id ? { ...p, orden: b.orden } : p.id === b.id ? { ...p, orden: a.orden } : p)) };
+}
+export function anadirEnlacePagina(d: AppData, id: string, titulo: string, url: string, mostrar = false): AppData {
+  const e: Enlace = { id: newId(), titulo, url, ...(mostrar ? { mostrar: true } : {}) };
+  return mapPagina(d, id, (p) => ({ ...p, enlaces: [...p.enlaces, e] }));
+}
+export function editarEnlacePagina(d: AppData, id: string, enlaceId: string, patch: Patch<Enlace>): AppData {
+  return mapPagina(d, id, (p) => ({ ...p, enlaces: p.enlaces.map((e) => (e.id === enlaceId ? { ...e, ...patch } : e)) }));
+}
+export function borrarEnlacePagina(d: AppData, id: string, enlaceId: string): AppData {
+  return mapPagina(d, id, (p) => ({ ...p, enlaces: p.enlaces.filter((e) => e.id !== enlaceId) }));
 }
 
 // ---------- Tareas ----------
@@ -136,6 +176,11 @@ export function editarAjustes(d: AppData, patch: Partial<Ajustes>): AppData {
 }
 
 // ---------- Importar / exportar ----------
+
+/** Completa datos guardados con versiones anteriores de la app (campos nuevos vacíos). */
+export function migrar(d: AppData): AppData {
+  return Array.isArray(d.normativa) ? d : { ...d, normativa: [] };
+}
 
 export function validarAppData(x: unknown): x is AppData {
   if (!x || typeof x !== 'object') return false;

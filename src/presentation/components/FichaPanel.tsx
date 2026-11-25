@@ -7,6 +7,7 @@ import { useStore } from '../state/AppStore';
 import { Icon } from './Icons';
 import { Checkbox, ProgressBar } from './ui';
 import { NotaRender } from './notaFormat';
+import { EnlacesSection } from './Enlaces';
 
 // El editor se descarga solo cuando hace falta.
 const NotaEditor = lazy(() => import('./NotaEditor'));
@@ -19,7 +20,6 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
   const { run } = useStore();
   const [full, setFull] = useState(false);
   const [nuevoPaso, setNuevoPaso] = useState('');
-  const [enlace, setEnlace] = useState({ titulo: '', url: '' });
   const [nuevaNota, setNuevaNota] = useState('');
   const [editorKey, setEditorKey] = useState(0);
   const [editNota, setEditNota] = useState<{ id: string; texto: string } | null>(null);
@@ -30,13 +30,6 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
     if (!nuevoPaso.trim()) return;
     run((d) => uc.anadirPaso(d, id, nuevoPaso.trim()));
     setNuevoPaso('');
-  };
-  const addEnlace = () => {
-    if (!enlace.url.trim()) return;
-    let url = enlace.url.trim();
-    if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
-    run((d) => uc.anadirEnlace(d, id, enlace.titulo.trim() || url, url));
-    setEnlace({ titulo: '', url: '' });
   };
   const addNota = () => {
     if (!nuevaNota.trim()) return;
@@ -99,23 +92,10 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
           </form>
         </section>
 
-        <section className="ficha-section">
-          <h3>Enlaces</h3>
-          {ficha.enlaces.map((e) => (
-            <div key={e.id} className="enlace">
-              <Icon name="link" size={16} color="var(--muted)" />
-              <a href={e.url} target="_blank" rel="noreferrer">{e.titulo}</a>
-              <button className="icon-btn subtle" aria-label="Borrar enlace" onClick={() => run((d) => uc.borrarEnlace(d, id, e.id))}><Icon name="trash" size={16} /></button>
-            </div>
-          ))}
-          <form className="enlace-form" onSubmit={(e) => { e.preventDefault(); addEnlace(); }}>
-            <input value={enlace.titulo} placeholder="Nombre (p. ej., Esquema visual)" aria-label="Nombre del enlace"
-              onChange={(e) => setEnlace((s) => ({ ...s, titulo: e.target.value }))} />
-            <input value={enlace.url} placeholder="Pega el enlace de Drive" aria-label="Dirección del enlace"
-              onChange={(e) => setEnlace((s) => ({ ...s, url: e.target.value }))} />
-            <button className="btn" type="submit">Añadir</button>
-          </form>
-        </section>
+        <EnlacesSection enlaces={ficha.enlaces}
+          onAdd={(titulo, url, mostrar) => run((d) => uc.anadirEnlace(d, id, titulo, url, mostrar))}
+          onToggle={(eid, mostrar) => run((d) => uc.editarEnlace(d, id, eid, { mostrar }))}
+          onRemove={(eid) => run((d) => uc.borrarEnlace(d, id, eid))} />
 
         <section className="ficha-section">
           <h3>Notas</h3>

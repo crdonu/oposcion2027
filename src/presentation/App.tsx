@@ -9,6 +9,7 @@ import { FichasPage } from './pages/FichasPage';
 import { ProgramacionPage } from './pages/ProgramacionPage';
 import { RequisitosPage } from './pages/RequisitosPage';
 import { ConvocatoriaPage } from './pages/ConvocatoriaPage';
+import { NormativaPage } from './pages/NormativaPage';
 import { AjustesPage } from './pages/AjustesPage';
 
 export function App({ auth, repository, cloud }: { auth: AuthService; repository: DataRepository; cloud: boolean }) {
@@ -34,6 +35,7 @@ export function App({ auth, repository, cloud }: { auth: AuthService; repository
             <Route path="/casos" element={<FichasPage key="caso" kind="caso" title="Casos prácticos" icon="caso" color="var(--c-caso)" nuevo="Nuevo caso" />} />
             <Route path="/programacion" element={<ProgramacionPage />} />
             <Route path="/programacion/requisitos" element={<RequisitosPage />} />
+            <Route path="/normativa" element={<NormativaPage />} />
             <Route path="/convocatoria" element={<ConvocatoriaPage />} />
             <Route path="/ajustes" element={<AjustesPage cloud={cloud} onLogout={async () => { await auth.logout(); setLogged(false); }} />} />
             <Route path="*" element={<Navigate to="/planificacion" replace />} />

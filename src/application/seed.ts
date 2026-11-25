@@ -100,6 +100,7 @@ export function crearDatosIniciales(): AppData {
       ...fichas('unidad', vacios(12)),
     ],
     normativa: [],
+    documentos: [],
     tareas: [],
     requisitos: [...requisitos('contenido', CONTENIDO), ...requisitos('formato', FORMATO)],
     convocatoria: convocatoria(),

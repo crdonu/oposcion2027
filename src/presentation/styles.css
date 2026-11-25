@@ -468,3 +468,15 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .esquema figcaption { justify-content: space-between; }
 .esquema-nombre { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 760px) { .link-btn { min-height: 40px; } }
+
+/* Documentos de consulta (Programación) */
+.docs-block { margin-top: 12px; display: flex; flex-direction: column; gap: 2px; }
+.docs-block h2 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.doc-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border-soft); }
+.doc-row > svg { margin-top: 3px; flex: none; }
+.doc-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.doc-text a { font-size: 15px; font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
+.doc-text a:hover { text-decoration: underline; }
+.doc-expl { font-size: 13px; color: var(--muted); line-height: 1.4; white-space: pre-line; }
+.doc-form { flex: 1; display: flex; flex-direction: column; gap: 6px; max-width: 640px; padding: 6px 0; }
+.doc-form input { min-height: 36px; border: 1px solid var(--border); border-radius: 6px; padding: 0 10px; background: var(--bg); font-size: 14px; }

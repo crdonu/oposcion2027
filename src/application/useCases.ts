@@ -1,6 +1,6 @@
 // Casos de uso: transformaciones puras de AppData. No saben nada de React ni del almacenamiento.
 import type {
-  AppData, Ajustes, Enlace, Estado, Ficha, FichaKind, Nota, PaginaNormativa, Paso, Requisito, RequisitoGrupo,
+  AppData, Ajustes, DocumentoConsulta, Enlace, Estado, Ficha, FichaKind, Nota, PaginaNormativa, Paso, Requisito, RequisitoGrupo,
   SeccionConvocatoria, Tarea,
 } from '../domain/entities';
 import { newId } from './ids';
@@ -129,6 +129,19 @@ export function borrarEnlacePagina(d: AppData, id: string, enlaceId: string): Ap
   return mapPagina(d, id, (p) => ({ ...p, enlaces: p.enlaces.filter((e) => e.id !== enlaceId) }));
 }
 
+// ---------- Documentos de consulta (Programación) ----------
+
+export function anadirDocumento(d: AppData, doc: Omit<DocumentoConsulta, 'id' | 'orden'>): AppData {
+  const orden = d.documentos.reduce((m, x) => Math.max(m, x.orden), 0) + 1;
+  return { ...d, documentos: [...d.documentos, { ...doc, id: newId(), orden }] };
+}
+export function editarDocumento(d: AppData, id: string, patch: Patch<DocumentoConsulta>): AppData {
+  return { ...d, documentos: d.documentos.map((x) => (x.id === id ? { ...x, ...patch } : x)) };
+}
+export function borrarDocumento(d: AppData, id: string): AppData {
+  return { ...d, documentos: d.documentos.filter((x) => x.id !== id) };
+}
+
 // ---------- Tareas ----------
 
 export function crearTarea(d: AppData, t: Omit<Tarea, 'id'>): AppData {
@@ -179,7 +192,11 @@ export function editarAjustes(d: AppData, patch: Partial<Ajustes>): AppData {
 
 /** Completa datos guardados con versiones anteriores de la app (campos nuevos vacíos). */
 export function migrar(d: AppData): AppData {
-  return Array.isArray(d.normativa) ? d : { ...d, normativa: [] };
+  return {
+    ...d,
+    normativa: Array.isArray(d.normativa) ? d.normativa : [],
+    documentos: Array.isArray(d.documentos) ? d.documentos : [],
+  };
 }
 
 export function validarAppData(x: unknown): x is AppData {

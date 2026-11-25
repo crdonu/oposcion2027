@@ -109,10 +109,20 @@ export interface PaginaNormativa {
   creada: string; // ISO datetime
 }
 
+/** Documento que se consulta para hacer la programación (instrucciones, orientaciones…). */
+export interface DocumentoConsulta {
+  id: string;
+  titulo: string;
+  url: string;
+  explicacion: string;
+  orden: number;
+}
+
 export interface AppData {
   version: 1;
   fichas: Ficha[];
   normativa: PaginaNormativa[];
+  documentos: DocumentoConsulta[];
   tareas: Tarea[];
   requisitos: Requisito[];
   convocatoria: SeccionConvocatoria[];

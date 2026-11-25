@@ -9,6 +9,7 @@ import { FichaGrid } from '../components/FichaGrid';
 import { FichaPanel } from '../components/FichaPanel';
 import { Icon } from '../components/Icons';
 import { PageHeader, ProgressBar } from '../components/ui';
+import { DocumentosConsulta } from '../components/DocumentosConsulta';
 
 const COLOR = 'var(--c-prog)';
 
@@ -67,6 +68,8 @@ export function ProgramacionPage() {
           })}
           <Link className="btn" to="/programacion/requisitos">Ver lista completa <Icon name="right" size={16} /></Link>
         </div>
+
+        <DocumentosConsulta />
       </div>
       {ficha && <FichaPanel key={ficha.id} ficha={ficha} color={COLOR} onClose={() => setSelected(null)} />}
     </div>

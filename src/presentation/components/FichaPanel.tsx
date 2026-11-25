@@ -122,11 +122,11 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
             <Suspense fallback={<div className="nota-editor is-loading" />}>
               <NotaEditor key={editorKey} value="" placeholder="Escribe una nota" onChange={setNuevaNota} />
             </Suspense>
-            <button className="btn" type="submit">Añadir nota</button>
+            <button className="btn small-btn" type="submit">Añadir nota</button>
           </form>
         </section>
 
-        <button className="btn danger-ghost" onClick={borrar}><Icon name="trash" size={16} />Borrar {FICHA_PREFIX[ficha.kind].toLowerCase()}</button>
+        <button className="link-btn link-danger" onClick={borrar}><Icon name="trash" size={14} />Borrar {FICHA_PREFIX[ficha.kind].toLowerCase()}</button>
       </div>
     </aside>
   );

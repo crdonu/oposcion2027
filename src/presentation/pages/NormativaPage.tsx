@@ -58,26 +58,26 @@ function PaginaPanel({ pagina, editarAlAbrir, onClose }: { pagina: PaginaNormati
               </div>
             </Suspense>
             <div className="pagina-acciones">
-              <button className="btn primary" type="submit">Guardar</button>
-              <button className="btn ghost" type="button" onClick={() => setBorrador(null)}>Cancelar</button>
+              <button className="btn primary small-btn" type="submit">Guardar</button>
+              <button className="link-btn" type="button" onClick={() => setBorrador(null)}>Cancelar</button>
             </div>
           </form>
         ) : (
           <div className="pagina-lectura">
-            <h2 className={`pagina-titulo ${pagina.titulo ? '' : 'is-empty'}`}>{pagina.titulo || 'Sin título'}</h2>
+            <div className="pagina-cabecera">
+              <h2 className={`pagina-titulo ${pagina.titulo ? '' : 'is-empty'}`}>{pagina.titulo || 'Sin título'}</h2>
+              <button className="link-btn" onClick={() => setBorrador({ titulo: pagina.titulo, texto: pagina.texto })}><Icon name="edit" size={14} />Editar</button>
+            </div>
             {pagina.texto.trim()
               ? <NotaRender texto={pagina.texto} />
               : <p className="pagina-vacia">Todavía no has escrito nada en esta página.</p>}
-            <div className="pagina-acciones">
-              <button className="btn" onClick={() => setBorrador({ titulo: pagina.titulo, texto: pagina.texto })}><Icon name="edit" size={15} />Editar</button>
-            </div>
           </div>
         )}
         <EnlacesSection enlaces={pagina.enlaces}
           onAdd={(titulo, url, mostrar) => run((d) => uc.anadirEnlacePagina(d, id, titulo, url, mostrar))}
           onToggle={(eid, mostrar) => run((d) => uc.editarEnlacePagina(d, id, eid, { mostrar }))}
           onRemove={(eid) => run((d) => uc.borrarEnlacePagina(d, id, eid))} />
-        <button className="btn danger-ghost" onClick={borrar}><Icon name="trash" size={16} />Borrar página</button>
+        <button className="link-btn link-danger" onClick={borrar}><Icon name="trash" size={14} />Borrar página</button>
       </div>
     </aside>
   );

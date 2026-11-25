@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Enlace } from '../../domain/entities';
 import { Icon } from './Icons';
+import { MenuMas } from './Menu';
 
 /** Id de un archivo de Drive a partir de su enlace (…/file/d/ID/…, …?id=ID). */
 function driveId(url: string): string | null {
@@ -33,11 +34,12 @@ function Esquema({ e, onToggle, onBorrar }: { e: Enlace; onToggle: () => void; o
         </button>
       )}
       <figcaption>
-        <a href={e.url} target="_blank" rel="noreferrer">{e.titulo}</a>
-        <span className="row">
-          <button type="button" className="btn ghost small-btn" onClick={onToggle}>Solo enlace</button>
-          <button type="button" className="icon-btn subtle" aria-label="Borrar" onClick={onBorrar}><Icon name="trash" size={15} /></button>
-        </span>
+        <span className="esquema-nombre">{e.titulo}</span>
+        <MenuMas label={`Opciones de ${e.titulo}`} opciones={[
+          { label: 'Abrir en Drive', onClick: () => window.open(e.url, '_blank', 'noreferrer') },
+          { label: 'Ver solo como enlace', onClick: onToggle },
+          { label: 'Quitar', onClick: onBorrar, danger: true },
+        ]} />
       </figcaption>
       {grande && (
         <div className="lightbox" role="dialog" aria-label={e.titulo} onClick={() => setGrande(false)}>
@@ -56,6 +58,7 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
   onRemove: (id: string) => void;
 }) {
   const [form, setForm] = useState({ titulo: '', url: '', mostrar: false });
+  const [abierto, setAbierto] = useState(false);
   const esquemas = enlaces.filter((e) => e.mostrar);
   const normales = enlaces.filter((e) => !e.mostrar);
 
@@ -65,6 +68,7 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
     if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
     onAdd(form.titulo.trim() || (form.mostrar ? 'Archivo de Drive' : url), url, form.mostrar);
     setForm({ titulo: '', url: '', mostrar: false });
+    setAbierto(false);
   };
 
   return (
@@ -84,12 +88,17 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
           <div key={e.id} className="enlace">
             <Icon name="link" size={16} color="var(--muted)" />
             <a href={e.url} target="_blank" rel="noreferrer">{e.titulo}</a>
-            <button type="button" className="btn ghost small-btn" title="Mostrar el archivo dentro de la página" onClick={() => onToggle(e.id, true)}>Mostrar aquí</button>
-            <button type="button" className="icon-btn subtle" aria-label="Borrar enlace" onClick={() => onRemove(e.id)}><Icon name="trash" size={16} /></button>
+            <MenuMas label={`Opciones de ${e.titulo}`} opciones={[
+              { label: 'Mostrar aquí', onClick: () => onToggle(e.id, true) },
+              { label: 'Quitar', onClick: () => onRemove(e.id), danger: true },
+            ]} />
           </div>
         ))}
+        {!abierto ? (
+          <button type="button" className="link-btn" onClick={() => setAbierto(true)}>+ Añadir enlace</button>
+        ) : (
         <form className="enlace-form" onSubmit={(ev) => { ev.preventDefault(); add(); }}>
-          <input value={form.titulo} placeholder="Nombre" aria-label="Nombre del enlace"
+          <input value={form.titulo} placeholder="Nombre" aria-label="Nombre del enlace" autoFocus
             onChange={(ev) => setForm((s) => ({ ...s, titulo: ev.target.value }))} />
           <input value={form.url} placeholder="Pega el enlace de Drive" aria-label="Dirección del enlace"
             onChange={(ev) => setForm((s) => ({ ...s, url: ev.target.value }))} />
@@ -97,8 +106,12 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
             <input type="checkbox" checked={form.mostrar} onChange={(ev) => setForm((s) => ({ ...s, mostrar: ev.target.checked }))} />
             Mostrar aquí
           </label>
-          <button className="btn" type="submit">Añadir</button>
+          <span className="row gap-2">
+            <button className="btn small-btn" type="submit">Añadir</button>
+            <button className="link-btn" type="button" onClick={() => { setAbierto(false); setForm({ titulo: '', url: '', mostrar: false }); }}>Cancelar</button>
+          </span>
         </form>
+        )}
       </section>
     </>
   );

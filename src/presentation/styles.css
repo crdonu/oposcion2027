@@ -452,3 +452,19 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .pagina-acciones { display: flex; gap: 8px; align-items: center; }
 .enlace-form .field-inline { flex-basis: 100%; display: flex; align-items: center; gap: 10px; min-height: 40px; cursor: pointer; }
 .enlace-form .field-inline input[type=checkbox] { flex: none; width: 20px; height: 20px; min-height: 0; padding: 0; margin: 0; accent-color: var(--done); }
+
+/* Botones discretos y menú «⋯» */
+.link-btn { border: none; background: none; padding: 6px 0; color: var(--muted); font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; }
+.link-btn:hover { color: var(--text); }
+.link-btn.link-danger { font-size: 13px; color: var(--faint); margin-top: 8px; }
+.link-btn.link-danger:hover { color: var(--late); }
+.pagina-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.pagina-cabecera .link-btn { flex: none; margin-top: 4px; }
+.menu-mas { position: relative; display: inline-flex; flex: none; }
+.menu-pop { position: absolute; right: 0; top: 100%; z-index: 30; min-width: 190px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 4px; display: flex; flex-direction: column; }
+.menu-item { border: none; background: none; text-align: left; padding: 9px 10px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+.menu-item:hover { background: var(--hover); }
+.menu-item.is-danger { color: var(--late); }
+.esquema figcaption { justify-content: space-between; }
+.esquema-nombre { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 760px) { .link-btn { min-height: 40px; } }

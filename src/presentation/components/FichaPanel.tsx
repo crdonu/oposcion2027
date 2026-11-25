@@ -1,24 +1,15 @@
 // Ficha de detalle: se abre a la derecha y puede ponerse a pantalla completa.
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { ESTADOS, ESTADO_LABEL, FICHA_PREFIX, type Estado, type Ficha } from '../../domain/entities';
 import { progresoPasos } from '../../domain/rules';
 import * as uc from '../../application/useCases';
 import { useStore } from '../state/AppStore';
 import { Icon } from './Icons';
 import { Checkbox, ProgressBar } from './ui';
+import { NotaRender } from './notaFormat';
 
-/** La primera línea de una nota con varias líneas se muestra como título, en negrita. */
-function NotaTexto({ texto }: { texto: string }) {
-  const i = texto.indexOf('\n');
-  const cuerpo = i === -1 ? '' : texto.slice(i + 1).replace(/^\s*\n/, '');
-  if (i === -1 || !cuerpo.trim()) return <p className="nota-text">{texto}</p>;
-  return (
-    <>
-      <p className="nota-title">{texto.slice(0, i)}</p>
-      <p className="nota-text">{cuerpo}</p>
-    </>
-  );
-}
+// El editor se descarga solo cuando hace falta.
+const NotaEditor = lazy(() => import('./NotaEditor'));
 
 function fecha(iso: string): string {
   return new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -30,6 +21,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
   const [nuevoPaso, setNuevoPaso] = useState('');
   const [enlace, setEnlace] = useState({ titulo: '', url: '' });
   const [nuevaNota, setNuevaNota] = useState('');
+  const [editorKey, setEditorKey] = useState(0);
   const [editNota, setEditNota] = useState<{ id: string; texto: string } | null>(null);
   const pp = progresoPasos(ficha);
   const id = ficha.id;
@@ -50,6 +42,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
     if (!nuevaNota.trim()) return;
     run((d) => uc.anadirNota(d, id, nuevaNota.trim()));
     setNuevaNota('');
+    setEditorKey((k) => k + 1);
   };
   const borrar = () => {
     if (confirm(`¿Borrar ${FICHA_PREFIX[ficha.kind].toLowerCase()} ${ficha.numero}? No se puede deshacer.`)) {
@@ -127,7 +120,9 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
         <section className="ficha-section">
           <h3>Notas</h3>
           <form className="nota-form" onSubmit={(e) => { e.preventDefault(); addNota(); }}>
-            <textarea value={nuevaNota} rows={2} placeholder="Escribe una nota" aria-label="Nueva nota" onChange={(e) => setNuevaNota(e.target.value)} />
+            <Suspense fallback={<div className="nota-editor is-loading" />}>
+              <NotaEditor key={editorKey} value="" placeholder="Escribe una nota" onChange={setNuevaNota} />
+            </Suspense>
             <button className="btn" type="submit">Añadir nota</button>
           </form>
           {ficha.notas.map((n) => (
@@ -141,10 +136,12 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
               </div>
               {editNota?.id === n.id ? (
                 <form onSubmit={(e) => { e.preventDefault(); run((d) => uc.editarNota(d, id, n.id, editNota.texto)); setEditNota(null); }}>
-                  <textarea value={editNota.texto} rows={3} aria-label="Editar nota" onChange={(e) => setEditNota({ id: n.id, texto: e.target.value })} />
+                  <Suspense fallback={<div className="nota-editor is-loading" />}>
+                    <NotaEditor value={editNota.texto} placeholder="Editar nota" autoFocus onChange={(texto) => setEditNota({ id: n.id, texto })} />
+                  </Suspense>
                   <span className="row gap-2"><button className="btn" type="submit">Guardar</button><button className="btn ghost" type="button" onClick={() => setEditNota(null)}>Cancelar</button></span>
                 </form>
-              ) : <NotaTexto texto={n.texto} />}
+              ) : <NotaRender texto={n.texto} />}
             </div>
           ))}
         </section>

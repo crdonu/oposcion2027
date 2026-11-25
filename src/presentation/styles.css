@@ -235,8 +235,25 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .nota { border: 1px solid var(--border-soft); border-radius: 8px; padding: 8px 12px 12px; background: var(--bg-soft); display: flex; flex-direction: column; gap: 4px; }
 .nota form { display: flex; flex-direction: column; gap: 6px; }
 .nota-head { display: flex; align-items: center; justify-content: space-between; }
-.nota-text { font-size: 14px; white-space: pre-line; }
-.nota-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.nota-text { font-size: 14px; line-height: 1.45; }
+.nota-text p { margin: 0; }
+.nota-text ul, .nota-editor-area ul { margin: 2px 0; padding-left: 22px; }
+.nota-text li, .nota-editor-area li { margin: 1px 0; }
+.nota-text li p, .nota-editor-area li p { margin: 0; }
+.nota-text strong, .nota-editor-area strong { font-weight: 650; }
+
+/* Editor de notas */
+.nota-editor { width: 100%; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
+.nota-editor:focus-within { border-color: var(--doing); }
+.nota-editor.is-loading { min-height: 84px; }
+.nota-toolbar { display: flex; gap: 2px; padding: 4px; border-bottom: 1px solid var(--border-soft); }
+.fmt-btn { width: 32px; height: 30px; border: none; border-radius: 5px; background: none; color: var(--muted); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; }
+.fmt-btn:hover { background: var(--hover); color: var(--text); }
+.fmt-btn.is-on { background: var(--done-soft); color: var(--done-ink); }
+.nota-editor-area { min-height: 52px; padding: 8px 10px; font-size: 14px; line-height: 1.45; outline: none; }
+.nota-editor-area p { margin: 0; }
+.nota-editor-body { position: relative; }
+.nota-placeholder { position: absolute; top: 8px; left: 10px; font-size: 14px; color: var(--faint); pointer-events: none; }
 
 /* ---------- Planificación ---------- */
 .cal-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }

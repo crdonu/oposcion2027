@@ -362,6 +362,14 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .dialog form { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
 .dialog h2 { font-size: 18px; font-weight: 700; }
 .dialog .field input, .dialog .field select { max-width: none; }
+.dialog-wide { width: min(560px, calc(100vw - 32px)); }
+.plan-table { border: 1px solid var(--border); border-radius: 8px; }
+.plan-row { display: flex; gap: 12px; padding: 10px 12px; border-bottom: 1px solid var(--border-soft); }
+.plan-row:last-child { border-bottom: none; }
+.plan-donde { flex: 0 0 170px; font-size: 13px; font-weight: 600; }
+.plan-que { flex: 1; font-size: 14px; line-height: 1.35; }
+.plan-avisos { margin: 0; padding-left: 18px; font-size: 13px; color: var(--late); }
+@media (max-width: 520px) { .plan-row { flex-direction: column; gap: 2px; } .plan-donde { flex: none; } }
 .dialog-actions { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
 
 /* ---------- Login ---------- */

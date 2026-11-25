@@ -1,0 +1,22 @@
+{
+  "tipo": "oposicion-anadir",
+  "fichas": [
+    {
+      "kind": "apartado",
+      "numero": 5,
+      "pasos": ["Revisar los resultados de aprendizaje del módulo", "Ponderar los criterios de evaluación"],
+      "notas": ["**Pendiente**\n- Preguntar al preparador por la ponderación"]
+    },
+    {
+      "kind": "tema",
+      "numero": 13,
+      "enlaces": [{ "titulo": "Esquema visual", "url": "https://drive.google.com/ejemplo" }]
+    }
+  ],
+  "tareas": [
+    { "titulo": "Ponderar criterios del apartado 5", "fecha": "2026-11-30", "ficha": { "kind": "apartado", "numero": 5 } }
+  ],
+  "requisitos": [
+    { "grupo": "formato", "texto": "Paginación en todas las hojas" }
+  ]
+}

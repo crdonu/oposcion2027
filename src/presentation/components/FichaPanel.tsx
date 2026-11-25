@@ -21,7 +21,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
   const [full, setFull] = useState(false);
   const [nuevoPaso, setNuevoPaso] = useState('');
   const [nuevaNota, setNuevaNota] = useState('');
-  const [editorKey, setEditorKey] = useState(0);
+  const [notaAbierta, setNotaAbierta] = useState(false);
   const [editNota, setEditNota] = useState<{ id: string; texto: string } | null>(null);
   const pp = progresoPasos(ficha);
   const id = ficha.id;
@@ -35,7 +35,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
     if (!nuevaNota.trim()) return;
     run((d) => uc.anadirNota(d, id, nuevaNota.trim()));
     setNuevaNota('');
-    setEditorKey((k) => k + 1);
+    setNotaAbierta(false);
   };
   const borrar = () => {
     if (confirm(`¿Borrar ${FICHA_PREFIX[ficha.kind].toLowerCase()} ${ficha.numero}? No se puede deshacer.`)) {
@@ -118,12 +118,19 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
               ) : <NotaRender texto={n.texto} />}
             </div>
           ))}
-          <form className="nota-form nota-form-bottom" onSubmit={(e) => { e.preventDefault(); addNota(); }}>
-            <Suspense fallback={<div className="nota-editor is-loading" />}>
-              <NotaEditor key={editorKey} value="" placeholder="Escribe una nota" onChange={setNuevaNota} />
-            </Suspense>
-            <button className="btn small-btn" type="submit">Añadir nota</button>
-          </form>
+          {!notaAbierta ? (
+            <button type="button" className="link-btn" onClick={() => setNotaAbierta(true)}>+ Añadir nota</button>
+          ) : (
+            <form className="nota-form nota-form-bottom" onSubmit={(e) => { e.preventDefault(); addNota(); }}>
+              <Suspense fallback={<div className="nota-editor is-loading" />}>
+                <NotaEditor value="" placeholder="Escribe una nota" autoFocus onChange={setNuevaNota} />
+              </Suspense>
+              <span className="row gap-2">
+                <button className="btn small-btn" type="submit">Añadir</button>
+                <button className="link-btn" type="button" onClick={() => { setNotaAbierta(false); setNuevaNota(''); }}>Cancelar</button>
+              </span>
+            </form>
+          )}
         </section>
 
         <button className="link-btn link-danger" onClick={borrar}><Icon name="trash" size={14} />Borrar {FICHA_PREFIX[ficha.kind].toLowerCase()}</button>

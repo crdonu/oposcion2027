@@ -57,13 +57,13 @@ function Fila({ doc }: { doc: DocumentoConsulta }) {
   );
 }
 
-export function DocumentosConsulta() {
+export function DocumentosConsulta({ conTitulo = true }: { conTitulo?: boolean }) {
   const { data, run } = useStore();
   const [anadiendo, setAnadiendo] = useState(false);
   const docs = [...data.documentos].sort((a, b) => a.orden - b.orden);
   return (
     <section className="docs-block">
-      <h2>Documentos de consulta</h2>
+      {conTitulo && <h2>Documentos de consulta</h2>}
       {docs.map((doc) => <Fila key={doc.id} doc={doc} />)}
       {anadiendo ? (
         <Formulario inicial={VACIO} boton="Añadir"

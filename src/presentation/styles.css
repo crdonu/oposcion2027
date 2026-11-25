@@ -231,6 +231,7 @@ p { margin: 0; }
 .enlace-form { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
 .enlace-form input { flex: 1 1 150px; min-height: 36px; border: 1px solid var(--border); border-radius: 6px; padding: 0 10px; background: var(--bg); font-size: 14px; }
 .nota-form { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; margin-bottom: 6px; }
+.nota-form-bottom { margin: 6px 0 0; }
 textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; background: var(--bg); font-size: 14px; resize: vertical; }
 .nota { border: 1px solid var(--border-soft); border-radius: 8px; padding: 8px 12px 12px; background: var(--bg-soft); display: flex; flex-direction: column; gap: 4px; }
 .nota form { display: flex; flex-direction: column; gap: 6px; }

@@ -119,13 +119,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
 
         <section className="ficha-section">
           <h3>Notas</h3>
-          <form className="nota-form" onSubmit={(e) => { e.preventDefault(); addNota(); }}>
-            <Suspense fallback={<div className="nota-editor is-loading" />}>
-              <NotaEditor key={editorKey} value="" placeholder="Escribe una nota" onChange={setNuevaNota} />
-            </Suspense>
-            <button className="btn" type="submit">Añadir nota</button>
-          </form>
-          {ficha.notas.map((n) => (
+          {[...ficha.notas].sort((a, b) => a.creada.localeCompare(b.creada)).map((n) => (
             <div key={n.id} className="nota">
               <div className="nota-head">
                 <span className="small muted">{fecha(n.creada)}{n.editada ? ' · editada' : ''}</span>
@@ -144,6 +138,12 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
               ) : <NotaRender texto={n.texto} />}
             </div>
           ))}
+          <form className="nota-form nota-form-bottom" onSubmit={(e) => { e.preventDefault(); addNota(); }}>
+            <Suspense fallback={<div className="nota-editor is-loading" />}>
+              <NotaEditor key={editorKey} value="" placeholder="Escribe una nota" onChange={setNuevaNota} />
+            </Suspense>
+            <button className="btn" type="submit">Añadir nota</button>
+          </form>
         </section>
 
         <button className="btn danger-ghost" onClick={borrar}><Icon name="trash" size={16} />Borrar {FICHA_PREFIX[ficha.kind].toLowerCase()}</button>

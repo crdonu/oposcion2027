@@ -77,7 +77,7 @@ export function borrarEnlace(d: AppData, fichaId: string, enlaceId: string): App
 // Notas
 export function anadirNota(d: AppData, fichaId: string, texto: string): AppData {
   const n: Nota = { id: newId(), texto, creada: new Date().toISOString() };
-  return mapFicha(d, fichaId, (f) => ({ ...f, notas: [n, ...f.notas] }));
+  return mapFicha(d, fichaId, (f) => ({ ...f, notas: [...f.notas, n] }));
 }
 export function editarNota(d: AppData, fichaId: string, notaId: string, texto: string): AppData {
   return mapFicha(d, fichaId, (f) => ({

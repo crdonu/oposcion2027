@@ -30,6 +30,7 @@
   --c-prog: #ea580c;
   --c-imp: #c0306b;
   --c-otro: #6b6b66;
+  --c-norm: #c81e1e;
   --s-tema: #efeafb; --i-tema: #4f3699;
   --s-caso: #e1f2e7; --i-caso: #22613c;
   --s-prog: #ffe7d6; --i-prog: #9a3412;
@@ -70,6 +71,7 @@
   --c-prog: #fb923c;
   --c-imp: #f472a6;
   --c-otro: #a3a39e;
+  --c-norm: #f87171;
   --s-tema: #2c2545; --i-tema: #c9bbff;
   --s-caso: #1e3328; --i-caso: #8fddae;
   --s-prog: #3b2214; --i-prog: #fdba8c;
@@ -437,3 +439,16 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .lightbox-close { position: absolute; top: 16px; right: 16px; }
 .enlace .small-btn { color: var(--muted); }
 .enlace-form .field-inline { flex-basis: 100%; }
+
+/* Normativa: tarjetas como las de Casos y página en modo lectura */
+.card-page { justify-content: flex-start; gap: 8px; }
+.card-page .card-title { font-size: 14px; font-weight: 600; }
+.pagina-lectura { display: flex; flex-direction: column; gap: 14px; }
+.pagina-titulo { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.25; margin: 0; overflow-wrap: anywhere; }
+.pagina-titulo.is-empty { color: var(--faint); }
+.pagina-lectura .nota-text { font-size: 15px; line-height: 1.6; }
+.pagina-lectura .nota-text p { min-height: 0.6em; }
+.pagina-vacia { color: var(--faint); font-size: 15px; }
+.pagina-acciones { display: flex; gap: 8px; align-items: center; }
+.enlace-form .field-inline { flex-basis: 100%; display: flex; align-items: center; gap: 10px; min-height: 40px; cursor: pointer; }
+.enlace-form .field-inline input[type=checkbox] { flex: none; width: 20px; height: 20px; min-height: 0; padding: 0; margin: 0; accent-color: var(--done); }

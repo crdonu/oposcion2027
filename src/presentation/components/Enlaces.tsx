@@ -1,5 +1,5 @@
 // Enlaces de una ficha o página. Los marcados como «Mostrar aquí» se ven como imagen
-// dentro de la página (esquemas guardados en Drive); el resto, como enlace normal.
+// dentro de la página (archivos guardados en Drive); el resto, como enlace normal.
 import { useState } from 'react';
 import type { Enlace } from '../../domain/entities';
 import { Icon } from './Icons';
@@ -63,7 +63,7 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
     let url = form.url.trim();
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
-    onAdd(form.titulo.trim() || (form.mostrar ? 'Esquema' : url), url, form.mostrar);
+    onAdd(form.titulo.trim() || (form.mostrar ? 'Archivo de Drive' : url), url, form.mostrar);
     setForm({ titulo: '', url: '', mostrar: false });
   };
 
@@ -71,10 +71,9 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
     <>
       {esquemas.length > 0 && (
         <section className="ficha-section">
-          <h3>Esquemas</h3>
           <div className="esquemas">
             {esquemas.map((e) => (
-              <Esquema key={e.id} e={e} onToggle={() => onToggle(e.id, false)} onBorrar={() => confirm('¿Quitar este esquema? (El archivo sigue en tu Drive.)') && onRemove(e.id)} />
+              <Esquema key={e.id} e={e} onToggle={() => onToggle(e.id, false)} onBorrar={() => confirm('¿Quitarlo de aquí? (El archivo sigue en tu Drive.)') && onRemove(e.id)} />
             ))}
           </div>
         </section>
@@ -90,13 +89,13 @@ export function EnlacesSection({ enlaces, onAdd, onToggle, onRemove }: {
           </div>
         ))}
         <form className="enlace-form" onSubmit={(ev) => { ev.preventDefault(); add(); }}>
-          <input value={form.titulo} placeholder="Nombre (p. ej., Esquema visual)" aria-label="Nombre del enlace"
+          <input value={form.titulo} placeholder="Nombre" aria-label="Nombre del enlace"
             onChange={(ev) => setForm((s) => ({ ...s, titulo: ev.target.value }))} />
           <input value={form.url} placeholder="Pega el enlace de Drive" aria-label="Dirección del enlace"
             onChange={(ev) => setForm((s) => ({ ...s, url: ev.target.value }))} />
           <label className="field-inline small">
             <input type="checkbox" checked={form.mostrar} onChange={(ev) => setForm((s) => ({ ...s, mostrar: ev.target.checked }))} />
-            Mostrar aquí (es un esquema o una imagen)
+            Mostrar aquí
           </label>
           <button className="btn" type="submit">Añadir</button>
         </form>

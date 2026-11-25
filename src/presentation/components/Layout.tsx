@@ -7,7 +7,7 @@ const NAV: Array<{ to: string; label: string; icon: IconName; color: string }> =
   { to: '/temario', label: 'Temario', icon: 'tema', color: 'var(--c-tema)' },
   { to: '/casos', label: 'Casos prácticos', icon: 'caso', color: 'var(--c-caso)' },
   { to: '/programacion', label: 'Programación', icon: 'programacion', color: 'var(--c-prog)' },
-  { to: '/normativa', label: 'Normativa', icon: 'normativa', color: 'var(--c-otro)' },
+  { to: '/normativa', label: 'Normativa', icon: 'normativa', color: 'var(--c-norm)' },
   { to: '/convocatoria', label: 'Convocatoria', icon: 'convocatoria', color: 'var(--c-otro)' },
 ];
 

@@ -52,12 +52,13 @@ export interface Ficha {
 }
 
 /** Tipo de tarea del calendario. Determina su color. */
-export type TareaTipo = 'tema' | 'caso' | 'programacion' | 'otro';
+export type TareaTipo = 'tema' | 'caso' | 'programacion' | 'importante' | 'otro';
 
 export const TAREA_TIPO_LABEL: Record<TareaTipo, string> = {
   tema: 'Tema',
   caso: 'Caso práctico',
   programacion: 'Programación',
+  importante: 'Importante',
   otro: 'Otro',
 };
 

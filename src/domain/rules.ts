@@ -62,3 +62,9 @@ export function etiquetaFicha(f: Ficha): string {
   const prefix = { tema: 'Tema', caso: 'Caso', apartado: '', unidad: 'Unidad' }[f.kind];
   return prefix ? `${prefix} ${f.numero}` : `${f.numero}.`;
 }
+
+/** Nombre completo: «Tema 13 · Título», «5. Elementos curriculares» o solo la etiqueta si no tiene título. */
+export function nombreFicha(f: Ficha): string {
+  if (!f.titulo) return etiquetaFicha(f);
+  return f.kind === 'apartado' ? `${f.numero}. ${f.titulo}` : `${etiquetaFicha(f)} · ${f.titulo}`;
+}

@@ -9,13 +9,13 @@
 //   "requisitos": [ { "grupo": "contenido", "texto": "…" } ]
 // }
 import type { AppData, Ficha, FichaKind, RequisitoGrupo, TareaTipo } from '../domain/entities';
-import { etiquetaFicha } from '../domain/rules';
+import { nombreFicha } from '../domain/rules';
 import * as uc from './useCases';
 
 export const TIPO_ARCHIVO = 'oposicion-anadir';
 
 const KINDS: FichaKind[] = ['tema', 'caso', 'apartado', 'unidad'];
-const TIPOS: TareaTipo[] = ['tema', 'caso', 'programacion', 'otro'];
+const TIPOS: TareaTipo[] = ['tema', 'caso', 'programacion', 'importante', 'otro'];
 const KIND_A_TIPO: Record<FichaKind, TareaTipo> = { tema: 'tema', caso: 'caso', apartado: 'programacion', unidad: 'programacion' };
 
 interface RefFicha { kind: FichaKind; numero: number }
@@ -98,11 +98,7 @@ export function leerAdicion(raw: unknown): { ok: true; adicion: Adicion } | { ok
 
 const igual = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
 const buscar = (d: AppData, r: RefFicha): Ficha | undefined => d.fichas.find((f) => f.kind === r.kind && f.numero === r.numero);
-const nombre = (r: RefFicha, f?: Ficha) => {
-  if (!f) return `${r.kind} ${r.numero}`;
-  if (!f.titulo) return etiquetaFicha(f);
-  return f.kind === 'apartado' ? `${f.numero}. ${f.titulo}` : `${etiquetaFicha(f)} · ${f.titulo}`;
-};
+const nombre = (r: RefFicha, f?: Ficha) => (f ? nombreFicha(f) : `${r.kind} ${r.numero}`);
 const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
 
 /** Recorre la adición sobre los datos: qué se añadiría, qué se repetiría y qué no encaja. */

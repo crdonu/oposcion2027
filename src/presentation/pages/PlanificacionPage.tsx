@@ -5,7 +5,7 @@ import {
   DIAS_CORTOS, addDays, parseISODate, addMonths, dayOfMonth, monthGrid, monthKey, monthLabel, monthName, shortDate,
   startOfMonth, startOfWeek, today, weekDays, weekRangeLabel, weeksBetween,
 } from '../../domain/dates';
-import { etiquetaFicha, fichasDe, ritmoEstudio, tareasAtrasadas, tareasDeSemana, tareasDelDia } from '../../domain/rules';
+import { nombreFicha, fichasDe, ritmoEstudio, tareasAtrasadas, tareasDeSemana, tareasDelDia } from '../../domain/rules';
 import * as uc from '../../application/useCases';
 import { useStore } from '../state/AppStore';
 import { Icon } from '../components/Icons';
@@ -80,7 +80,7 @@ function TareaCard({ t, onEdit }: { t: Tarea; onEdit: (d: TareaDraft) => void })
   return (
     <div className={`task-card ${t.hecha ? 'is-done' : ''}`}>
       <Checkbox checked={t.hecha} label="Marcar como hecha" onChange={(v) => run((d) => uc.editarTarea(d, t.id, { hecha: v }))} />
-      <button className="task-text" onClick={() => onEdit(t)}>
+      <button className={`task-text ${t.tipo === 'importante' ? 'tipo-importante-text' : ''}`} onClick={() => onEdit(t)}>
         <span className={`tipo-dot tipo-bg-${t.tipo}`} />
         {t.titulo}
       </button>
@@ -167,6 +167,7 @@ function Leyenda() {
       <span><i className="dot tipo-bg-tema" />Temas</span>
       <span><i className="dot tipo-bg-caso" />Casos</span>
       <span><i className="dot tipo-bg-programacion" />Programación</span>
+      <span><i className="dot tipo-bg-importante" />Importante</span>
       <span><i className="dot tipo-bg-otro" />Otros</span>
     </div>
   );
@@ -200,7 +201,7 @@ function VistaJunio({ hoy, onEdit }: { hoy: string; onEdit: (d: TareaDraft) => v
       run((d) => {
         const f = d.fichas.find((x) => x.id === fichaId);
         if (!f) return d;
-        return uc.crearTarea(d, { titulo: f.titulo ? `${etiquetaFicha(f)} · ${f.titulo}` : etiquetaFicha(f), tipo: 'tema', fecha: monday, hecha: false, fichaId });
+        return uc.crearTarea(d, { titulo: nombreFicha(f), tipo: 'tema', fecha: monday, hecha: false, fichaId });
       });
     }
   };

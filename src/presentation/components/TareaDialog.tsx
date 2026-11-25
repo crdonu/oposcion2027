@@ -1,12 +1,12 @@
 // Diálogo para crear o editar una tarea del calendario.
 import { useEffect, useRef, useState } from 'react';
 import { TAREA_TIPO_LABEL, type Tarea, type TareaTipo } from '../../domain/entities';
-import { etiquetaFicha } from '../../domain/rules';
+import { nombreFicha } from '../../domain/rules';
 import * as uc from '../../application/useCases';
 import { useStore } from '../state/AppStore';
 
 const TIPO_A_KIND: Record<TareaTipo, Array<'tema' | 'caso' | 'apartado' | 'unidad'>> = {
-  tema: ['tema'], caso: ['caso'], programacion: ['apartado', 'unidad'], otro: [],
+  tema: ['tema'], caso: ['caso'], programacion: ['apartado', 'unidad'], importante: [], otro: [],
 };
 
 export type TareaDraft = Omit<Tarea, 'id'> & { id?: string };
@@ -37,7 +37,7 @@ export function TareaDialog({ draft, onClose }: { draft: TareaDraft; onClose: ()
   function autoTitulo(fichaId?: string): string {
     const f = data.fichas.find((x) => x.id === fichaId);
     if (!f) return '';
-    return f.titulo ? `${etiquetaFicha(f)} · ${f.titulo}` : etiquetaFicha(f);
+    return nombreFicha(f);
   }
 
   const guardar = () => {
@@ -62,7 +62,7 @@ export function TareaDialog({ draft, onClose }: { draft: TareaDraft; onClose: ()
           <label className="field"><span>Relacionada con</span>
             <select value={t.fichaId ?? ''} onChange={(e) => elegirFicha(e.target.value)}>
               <option value="">— Ninguna —</option>
-              {opciones.map((f) => <option key={f.id} value={f.id}>{etiquetaFicha(f)}{f.titulo ? ` · ${f.titulo}` : ''}</option>)}
+              {opciones.map((f) => <option key={f.id} value={f.id}>{nombreFicha(f)}</option>)}
             </select>
           </label>
         )}

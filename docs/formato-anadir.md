@@ -26,7 +26,7 @@ El archivo es un JSON con esta forma (todo es opcional salvo `"tipo"`):
 ```
 
 - `kind`: `tema`, `caso`, `apartado` (de la programación) o `unidad` (didáctica). `numero`: el número que se ve en la tarjeta.
-- Tareas: `fecha` en formato `AAAA-MM-DD`. `tipo` (opcional): `tema`, `caso`, `programacion` u `otro`; si se omite y hay `ficha`, se deduce. `ficha` (opcional) la relaciona con una tarjeta.
+- Tareas: `fecha` en formato `AAAA-MM-DD`. `tipo` (opcional): `tema`, `caso`, `programacion`, `importante` u `otro`; si se omite y hay `ficha`, se deduce. `ficha` (opcional) la relaciona con una tarjeta.
 - Requisitos: `grupo` es `contenido` o `formato`.
 - Notas: `**texto**` es negrita y una línea que empieza por `- ` es una viñeta.
 - No se repite nada que ya exista (mismo texto en la misma ficha, misma tarea el mismo día, mismo enlace).

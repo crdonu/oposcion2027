@@ -27,11 +27,13 @@
   --c-plan: #2f6fdb;
   --c-tema: #6d4fc2;
   --c-caso: #2e7d4f;
-  --c-prog: #b4532a;
+  --c-prog: #a16207;
+  --c-imp: #c0306b;
   --c-otro: #6b6b66;
   --s-tema: #efeafb; --i-tema: #4f3699;
   --s-caso: #e1f2e7; --i-caso: #22613c;
-  --s-prog: #fbe7dc; --i-prog: #8e3d1b;
+  --s-prog: #fef3c7; --i-prog: #854d0e;
+  --s-imp: #fce7f0; --i-imp: #9d174d;
   --s-otro: #f1f1ef; --i-otro: #55534e;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
@@ -65,11 +67,13 @@
   --c-plan: #6ea4ff;
   --c-tema: #b9a6f5;
   --c-caso: #7fcf9e;
-  --c-prog: #f0a27d;
+  --c-prog: #e3b341;
+  --c-imp: #f472a6;
   --c-otro: #a3a39e;
   --s-tema: #2c2545; --i-tema: #c9bbff;
   --s-caso: #1e3328; --i-caso: #8fddae;
-  --s-prog: #3a2419; --i-prog: #f6b796;
+  --s-prog: #3a2e12; --i-prog: #f5d27a;
+  --s-imp: #3d1a2a; --i-imp: #f9a8c9;
   --s-otro: #2a2b2e; --i-otro: #c3c3bf;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -270,14 +274,18 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .tipo-caso { color: var(--c-caso); }
 .tipo-programacion { color: var(--c-prog); }
 .tipo-otro { color: var(--c-otro); }
+.tipo-importante { color: var(--c-imp); font-weight: 600; }
 .tipo-bg-tema { background: var(--c-tema); }
 .tipo-bg-caso { background: var(--c-caso); }
 .tipo-bg-programacion { background: var(--c-prog); }
 .tipo-bg-otro { background: var(--c-otro); }
+.tipo-bg-importante { background: var(--c-imp); }
 .tipo-soft-tema { background: var(--s-tema); color: var(--i-tema); }
 .tipo-soft-caso { background: var(--s-caso); color: var(--i-caso); }
 .tipo-soft-programacion { background: var(--s-prog); color: var(--i-prog); }
 .tipo-soft-otro { background: var(--s-otro); color: var(--i-otro); }
+.tipo-soft-importante { background: var(--s-imp); color: var(--i-imp); font-weight: 600; }
+.task-card .tipo-importante-text, .task-text.tipo-importante-text { font-weight: 600; }
 
 .week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; min-height: 420px; }
 .week-col { display: flex; flex-direction: column; gap: 6px; padding: 8px; border-radius: 8px; background: var(--bg-soft); }
@@ -288,7 +296,7 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .week-col.is-today .dnum { color: var(--done); }
 .add-day { margin-left: auto; align-self: center; }
 .task-card { display: flex; align-items: flex-start; gap: 2px; padding: 4px 6px 4px 2px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); cursor: grab; }
-.task-text { flex: 1; min-width: 0; text-align: left; border: none; background: none; padding: 6px 2px; font-size: 13px; line-height: 1.3; cursor: pointer; display: flex; gap: 6px; align-items: flex-start; }
+.task-text { flex: 1; min-width: 0; overflow-wrap: anywhere; text-align: left; border: none; background: none; padding: 6px 2px; font-size: 13px; line-height: 1.3; cursor: pointer; display: flex; gap: 6px; align-items: flex-start; }
 .task-card.is-done .task-text { color: var(--faint); text-decoration: line-through; }
 .tipo-dot { width: 8px; height: 8px; border-radius: 2px; margin-top: 4px; flex-shrink: 0; }
 

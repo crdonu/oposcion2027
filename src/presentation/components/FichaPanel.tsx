@@ -7,6 +7,19 @@ import { useStore } from '../state/AppStore';
 import { Icon } from './Icons';
 import { Checkbox, ProgressBar } from './ui';
 
+/** La primera línea de una nota con varias líneas se muestra como título, en negrita. */
+function NotaTexto({ texto }: { texto: string }) {
+  const i = texto.indexOf('\n');
+  const cuerpo = i === -1 ? '' : texto.slice(i + 1).replace(/^\s*\n/, '');
+  if (i === -1 || !cuerpo.trim()) return <p className="nota-text">{texto}</p>;
+  return (
+    <>
+      <p className="nota-title">{texto.slice(0, i)}</p>
+      <p className="nota-text">{cuerpo}</p>
+    </>
+  );
+}
+
 function fecha(iso: string): string {
   return new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
 }
@@ -131,7 +144,7 @@ export function FichaPanel({ ficha, color, onClose }: { ficha: Ficha; color: str
                   <textarea value={editNota.texto} rows={3} aria-label="Editar nota" onChange={(e) => setEditNota({ id: n.id, texto: e.target.value })} />
                   <span className="row gap-2"><button className="btn" type="submit">Guardar</button><button className="btn ghost" type="button" onClick={() => setEditNota(null)}>Cancelar</button></span>
                 </form>
-              ) : <p className="nota-text">{n.texto}</p>}
+              ) : <NotaTexto texto={n.texto} />}
             </div>
           ))}
         </section>

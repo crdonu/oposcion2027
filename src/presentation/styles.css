@@ -236,6 +236,7 @@ textarea { width: 100%; border: 1px solid var(--border); border-radius: 6px; pad
 .nota form { display: flex; flex-direction: column; gap: 6px; }
 .nota-head { display: flex; align-items: center; justify-content: space-between; }
 .nota-text { font-size: 14px; white-space: pre-line; }
+.nota-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
 
 /* ---------- Planificación ---------- */
 .cal-nav { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }

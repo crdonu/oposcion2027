@@ -32,7 +32,8 @@ self.addEventListener('fetch', (e) => {
 
   if (req.mode === 'navigate') {
     e.respondWith(
-      fetch(req)
+      // 'no-cache': pregunta siempre al servidor si hay versión nueva (sin esperar a la caché del navegador).
+      fetch(req, { cache: 'no-cache' })
         .then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put('./index.html', copy)); return res; })
         .catch(() => caches.match('./index.html', { ignoreVary: true })),
     );
